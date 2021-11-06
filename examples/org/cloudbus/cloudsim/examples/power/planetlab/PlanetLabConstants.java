@@ -14,6 +14,10 @@ package org.cloudbus.cloudsim.examples.power.planetlab;
  */
 public class PlanetLabConstants {
 
-	public final static int NUMBER_OF_HOSTS = 800;
+	// default and homogeneous
+//	public final static int NUMBER_OF_HOSTS = 800;
+	
+	// heterogeneous
+	public final static int NUMBER_OF_HOSTS = 560;
 
 }

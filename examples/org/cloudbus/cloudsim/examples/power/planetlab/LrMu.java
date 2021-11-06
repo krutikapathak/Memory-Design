@@ -40,6 +40,7 @@ public class LrMu {
 		String[] planetlabArr = {"20110303", "20110306", "20110309", "20110322", "20110325", "20110403", "20110409", 
 				"20110411", "20110412", "20110420"}; // 10 days PlanetLab data folders
 		String[] bitbrainArr = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}; // 10 days BitBrain data folders
+		
 		for(String filename : planetlabArr) {
 			String inputFolder = LrMu.class.getClassLoader().getResource("workload/PlanetLab").getPath();
 			String workload = filename; 

@@ -209,49 +209,89 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends PowerVmAl
 	 * @param excludedHosts the excluded hosts
 	 * @return the power host
 	 */
-	// PEBFD
-	public PowerHost findHostForVm(Vm vm, Set<? extends Host> excludedHosts) {
-
-		double bestPowerEfficiency = Double.MIN_VALUE;
-		double inactiveEff = Double.MIN_VALUE;
-		PowerHost allocatedHost = null;
-		PowerHost inactiveHost = null;
-
-		for (PowerHost host : this.<PowerHost> getHostList()) {
-			if (excludedHosts.contains(host)) {
-				continue;
-			}
-			if (host.isSuitableForVm(vm)) {
-				if (getUtilizationOfCpuMips(host) != 0 && isHostOverUtilizedAfterAllocation(host, vm)) {
-					continue;
-				}
-				
-			try {
-				double powerEfficiency = host.getTotalMips() / host.getMaxPower();
-				if(host.getUtilizationMips() == 0) {			
-					if (powerEfficiency > inactiveEff ) {
-						inactiveEff = powerEfficiency;
-						inactiveHost = host;
-						}	
-					continue;
-					}				
-
-			       if (powerEfficiency > bestPowerEfficiency) {
-			    	   bestPowerEfficiency = powerEfficiency;
-			           allocatedHost = host;
-			            }
-			       else if (powerEfficiency == bestPowerEfficiency) {
-			    	   if(host.getAvailableMips() < allocatedHost.getAvailableMips()) allocatedHost = host;  
-			            }
-										
-					} catch (Exception e) {
-				}
-			}
-		}
-		return (allocatedHost!=null) ?allocatedHost:inactiveHost;
-	}
 	
-//	// MFPED
+	// PEFFD
+//	public PowerHost findHostForVm(Vm vm, Set<? extends Host> excludedHosts) {
+//
+//		double bestPowerEfficiency = Double.MIN_VALUE;
+//		double inactiveEff = Double.MIN_VALUE;
+//		PowerHost allocatedHost = null;
+//		PowerHost inactiveHost = null;
+//
+//		for (PowerHost host : this.<PowerHost> getHostList()) {
+//			if (excludedHosts.contains(host)) {
+//				continue;
+//			}
+//			if (host.isSuitableForVm(vm)) {
+//				if (getUtilizationOfCpuMips(host) != 0 && isHostOverUtilizedAfterAllocation(host, vm)) {
+//					continue;
+//				}
+//				
+//			try {
+//				double powerEfficiency = host.getTotalMips() / host.getMaxPower();
+//				if(host.getUtilizationMips() == 0) {			
+//					if (powerEfficiency > inactiveEff ) {
+//						inactiveEff = powerEfficiency;
+//						inactiveHost = host;
+//						}	
+//					continue;
+//					}				
+//
+//			       if (powerEfficiency > bestPowerEfficiency) {
+//			    	   bestPowerEfficiency = powerEfficiency;
+//			           allocatedHost = host;
+//			            }
+//										
+//					} catch (Exception e) {
+//				}
+//			}
+//		}
+//		return (allocatedHost!=null) ?allocatedHost:inactiveHost;
+//	}
+	
+	// PEBFD
+//	public PowerHost findHostForVm(Vm vm, Set<? extends Host> excludedHosts) {
+//
+//		double bestPowerEfficiency = Double.MIN_VALUE;
+//		double inactiveEff = Double.MIN_VALUE;
+//		PowerHost allocatedHost = null;
+//		PowerHost inactiveHost = null;
+//
+//		for (PowerHost host : this.<PowerHost> getHostList()) {
+//			if (excludedHosts.contains(host)) {
+//				continue;
+//			}
+//			if (host.isSuitableForVm(vm)) {
+//				if (getUtilizationOfCpuMips(host) != 0 && isHostOverUtilizedAfterAllocation(host, vm)) {
+//					continue;
+//				}
+//				
+//			try {
+//				double powerEfficiency = host.getTotalMips() / host.getMaxPower();
+//				if(host.getUtilizationMips() == 0) {			
+//					if (powerEfficiency > inactiveEff ) {
+//						inactiveEff = powerEfficiency;
+//						inactiveHost = host;
+//						}	
+//					continue;
+//					}				
+//
+//			       if (powerEfficiency > bestPowerEfficiency) {
+//			    	   bestPowerEfficiency = powerEfficiency;
+//			           allocatedHost = host;
+//			            }
+//			       else if (powerEfficiency == bestPowerEfficiency) {
+//			    	   if(host.getAvailableMips() < allocatedHost.getAvailableMips()) allocatedHost = host;  
+//			            }
+//										
+//					} catch (Exception e) {
+//				}
+//			}
+//		}
+//		return (allocatedHost!=null) ?allocatedHost:inactiveHost;
+//	}
+	
+	// MFPED
 //	public PowerHost findHostForVm(Vm vm, Set<? extends Host> excludedHosts) {
 //
 //		double minDiff = Double.MAX_VALUE;
@@ -329,34 +369,34 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends PowerVmAl
 //	}
 	
 	// PABFD
-//	public PowerHost findHostForVm(Vm vm, Set<? extends Host> excludedHosts) {
-//		double minPower = Double.MAX_VALUE;
-//		PowerHost allocatedHost = null;
-//
-//		for (PowerHost host : this.<PowerHost> getHostList()) {
-//			if (excludedHosts.contains(host)) {
-//				continue;
-//			}
-//			if (host.isSuitableForVm(vm)) {
-//				if (getUtilizationOfCpuMips(host) != 0 && isHostOverUtilizedAfterAllocation(host, vm)) {
-//					continue;
-//				}
-//
-//				try {
-//					double powerAfterAllocation = getPowerAfterAllocation(host, vm);
-//					if (powerAfterAllocation != -1) {
-//						double powerDiff = powerAfterAllocation - host.getPower();
-//						if (powerDiff < minPower) {
-//							minPower = powerDiff;
-//							allocatedHost = host;
-//						}
-//					}
-//				} catch (Exception e) {
-//				}
-//			}
-//		}
-//		return allocatedHost;
-//	}
+	public PowerHost findHostForVm(Vm vm, Set<? extends Host> excludedHosts) {
+		double minPower = Double.MAX_VALUE;
+		PowerHost allocatedHost = null;
+
+		for (PowerHost host : this.<PowerHost> getHostList()) {
+			if (excludedHosts.contains(host)) {
+				continue;
+			}
+			if (host.isSuitableForVm(vm)) {
+				if (getUtilizationOfCpuMips(host) != 0 && isHostOverUtilizedAfterAllocation(host, vm)) {
+					continue;
+				}
+
+				try {
+					double powerAfterAllocation = getPowerAfterAllocation(host, vm);
+					if (powerAfterAllocation != -1) {
+						double powerDiff = powerAfterAllocation - host.getPower();
+						if (powerDiff < minPower) {
+							minPower = powerDiff;
+							allocatedHost = host;
+						}
+					}
+				} catch (Exception e) {
+				}
+			}
+		}
+		return allocatedHost;
+	}
 	
 
 	/**
